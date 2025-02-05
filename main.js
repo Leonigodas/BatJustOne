@@ -1,3 +1,6 @@
+//Question pour du JS -> MDN
+//Question pour les modules de JS -> npm
+
 console.log("Bienvenu Monsieur Wayne ! \nVous êtes venu vous détendre avec une partie de Just One ?");
 
 const { log } = require('node:console');
@@ -6,9 +9,9 @@ const readline = require('node:readline');
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
-});
+});//Module Question
 
-function askQuestion(question) {
+async function askQuestion(question) {
   return new Promise(resolve => {
     rl.question(question, answer => resolve(answer));
   });
@@ -18,17 +21,9 @@ async function main() {
 
   var nb_player=-5;
   while (isNaN(nb_player) || nb_player <= 0){ //Is Not A Number
-    var nb_player = await askQuestion("Avec combien d'invités jouerez vous ? ");
+    var nb_player = await askQuestion("Avec combien d'invités jouerez vous ? "); //pas await then  ; await remplacé par async
   }
   console.log(`Très bien ! Je prépare la table de suite.`);
-
-  /*
-  for (var i =0;i<nb_player; i++){
-  rl.question(`Combien serez vous à jouer Monsieur ?`, name => {
-      console.log(`Bien le bonjour ${name}!`);
-    });
-  }
-  */
 
   var ListWords = ["Europe","chocolat","feuille","chemise","guerre","virus","neige","vert","cadeau","planète","poubelle","Barcelone","jardin","grenouille","bleu","Seine","judo","papillon","cadeau","nuage","coeur","Paris","orange","cirque","crocodile","Terre","coq","noir","lion","mercredi","vacances","football","oiseau","ogre","princesse","soleil","Champignon","lampe","film","Noël","château","concert","sucre","rose","masque","fleur","Bordeaux","yoga","roi","verre","papier","Paris","pain","docteur","lunettes","César","cochon","livre","marron","zoo"];
   //Selection du mot aléatoirement
