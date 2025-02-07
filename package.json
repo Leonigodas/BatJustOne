@@ -1,0 +1,20 @@
+{
+  "name": "batjustone",
+  "version": "1.0.0",
+  "description": "3TC Project : Just One in JavaScript",
+  "main": "main.js",
+  "scripts": {
+    "test": "node main.js",
+    "start": "node main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Leonigodas/BatJustOne.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Leonigodas/BatJustOne/issues"
+  },
+  "homepage": "https://github.com/Leonigodas/BatJustOne#readme"
+}
