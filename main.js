@@ -44,31 +44,47 @@ async function main() {
   var ChosenWord = -5;
   if ((ChosenWord >5)||(ChosenWord <0)) {
     //                                  On récupère les indices
-    const ChosenWord = await askQuestion("Demandez au joueur, qui doit deviner le mot, de donner un numéro entre 0 et 4 ")
+    ChosenWord = await askQuestion("Demandez au joueur, qui doit deviner le mot, de donner un numéro entre 0 et 4 ")
     if (isNaN(ChosenWord)||ChosenWord<0||ChosenWord>5){ //On s'assure d'avoir un entier adéquat
       ChosenWord = 0;
     }  
     console.log(`Vous devez donc lui faire deviner le mot ${carte[ChosenWord]} `);
-    let clues = []
+    var clues = [];
     for (var i =0;i<nb_player; i++){//Chaque joueur renseigne son indice 
-      await askQuestion(`Entrez l'indice que vous avez choisi\n`)
-      clues.push();
+      clues.push(await askQuestion(`Entrez l'indice que vous avez choisi\n`));
       console.log(`ok !`); 
     }
-    
-    };
-    ////Demandez au joueur qui doit deviner le mot de donner un numéro entre 1 et 5
+    }
     //                      Fin de la récupération des indices
-
     //                    Faut maintenant s'assurer que les indices ne soient pas identiques
-
-
+    var valid_clues = [];
+    var valid_word = 0;
+    for (let i = 0; i < clues.length; i++) {
+      valid_word = 0;
+      for (let j = 0; j < clues.length; j++) {
+        if (i!=j){
+          if (clues[i] == clues[j]) {
+            valid_word = 1;
+          }
+        }
+      }
+    if (valid_word == 0){
+      valid_clues.push(clues[i]);
+    }
+    }
+    
     //                      On affiche les indices qui sont uniques
 
+    console.log ("C'est désormais à nouveau au tour du joueur qui devine le mot !");
+    console.log (`Voici les différents indices que vous avez à votre disposition : ${valid_clues}`);
     
-    //                On demande à celui qui doit deviner de faire une prosition
-
-
+    //                On demande à celui qui doit deviner de faire une proposition
+    const input_word = await askQuestion ("Veuillez entrer le mot que vous avez deviné grâce aux indices (attention, au singulier, sans majuscule et bien orthographié, sinon ce sera compté comme faux !): ")
+    if (input_word == carte[ChosenWord]){
+      console.log(`Bien joué ! Vous avez trouvé le mot qui était ${carte[ChosenWord]}! On espère que vous avez aimé jouer à notre jeu !`);
+    }else{
+      console.log(`Aïe ! Vous vous êtes trompés ! Le mot à trouver était ${carte[ChosenWord]}`);
+    }
   rl.close();
   //Combien serez vous à jouer Monsieur ?
 }
