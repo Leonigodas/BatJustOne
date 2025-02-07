@@ -16,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/Leonigodas/BatJustOne/issues"
   },
-  "homepage": "https://github.com/Leonigodas/BatJustOne#readme"
+  "homepage": "https://github.com/Leonigodas/BatJustOne#readme",
+  "dependencies": {
+    "ansi-color": "^0.2.1",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1"
+  }
 }
