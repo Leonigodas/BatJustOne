@@ -14,6 +14,10 @@ function askQuestion(question) {
   });
 }
 
+function normalizing_words(word) {
+  return(word.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase())
+}
+
 async function main() {
 
   var nb_player=-5;
@@ -42,36 +46,33 @@ async function main() {
   console.log(`La Carte est ${carte} `);
   
   var ChosenWord = -5;
-  if ((ChosenWord >5)||(ChosenWord <0)) {
+  if ((ChosenWord >4)||(ChosenWord <0)) {
     //                                  On récupère les indices
     ChosenWord = await askQuestion("Demandez au joueur, qui doit deviner le mot, de donner un numéro entre 0 et 4 ")
-    if (isNaN(ChosenWord)||ChosenWord<0||ChosenWord>5){ //On s'assure d'avoir un entier adéquat
+    if (isNaN(ChosenWord)||ChosenWord<0||ChosenWord>5){ //On s'assure d'avoir un entier adéquat A CORRIGER
       ChosenWord = 0;
     }  
     console.log(`Vous devez donc lui faire deviner le mot ${carte[ChosenWord]} `);
     var clues = [];
+    var clues_normalized = [];
     for (var i =0;i<nb_player; i++){//Chaque joueur renseigne son indice 
-      clues.push(await askQuestion(`Entrez l'indice que vous avez choisi\n`));
+
+
+      var clue_word = await askQuestion(`Entrez l'indice que vous avez choisi (attention, vous pouvez mettre des accents et des majuscules, ils ne seront pas pris en compte, mais pas de pluriel !\n`)
+      var clue_word_normalized = clue_word.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+      clues.push(clue_word); 
+      clues_normalized.push(clue_word_normalized)
       console.log(`ok !`); 
     }
     }
     //                      Fin de la récupération des indices
     //                    Faut maintenant s'assurer que les indices ne soient pas identiques
     var valid_clues = [];
-    var valid_word = 0;
-    for (let i = 0; i < clues.length; i++) {
-      valid_word = 0;
-      for (let j = 0; j < clues.length; j++) {
-        if (i!=j){
-          if (clues[i] == clues[j]) {
-            valid_word = 1;
-          }
-        }
+    clues_normalized.forEach((mot) => {
+      if (!valid_clues.includes(mot)) {
+        valid_clues.push(mot);
       }
-    if (valid_word == 0){
-      valid_clues.push(clues[i]);
-    }
-    }
+    });
     
     //                      On affiche les indices qui sont uniques
 
@@ -79,15 +80,15 @@ async function main() {
     console.log (`Voici les différents indices que vous avez à votre disposition : ${valid_clues}`);
     
     //                On demande à celui qui doit deviner de faire une proposition
-    const input_word = await askQuestion ("Veuillez entrer le mot que vous avez deviné grâce aux indices (attention, au singulier, sans majuscule et bien orthographié, sinon ce sera compté comme faux !): ")
-    if (input_word == carte[ChosenWord]){
+    var input_word = await askQuestion ("Veuillez entrer le mot que vous avez deviné grâce aux indices (attention à bien orthographier le mot, les accents, les majuscules et le pluriel ne sont pas un problème.): ");
+    var mot_carte = carte[ChosenWord].normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    var normalize_input_word = input_word.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    if (normalize_input_word == mot_carte){
       console.log(`Bien joué ! Vous avez trouvé le mot qui était ${carte[ChosenWord]}! On espère que vous avez aimé jouer à notre jeu !`);
     }else{
       console.log(`Aïe ! Vous vous êtes trompés ! Le mot à trouver était ${carte[ChosenWord]}`);
     }
   rl.close();
-  //Combien serez vous à jouer Monsieur ?
 }
-
 
 main();
